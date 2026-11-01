@@ -4,6 +4,11 @@ key.pem
 *.pem
 # signing keys of the Android apps: whoever has them can publish updates under the apps' names
 *.jks
+*.keystore
+*.p12
+*.pfx
+.env
+.env.*
 # this machine's own data and downloads
 tvs.json
 tvs.json.tmp
@@ -21,7 +26,11 @@ app/gradle/build/
 app/gradle/local.properties
 .idea/
 # APKs are attached to releases, never committed
-*.apk                                                     # anywhere: a test once left app/shared/tv-home.apk in git
+# anywhere: APKs are attached to releases, never committed
+*.apk
+*.aab
+adbkey
+adbkey.pub
 *.tvrkeys
 
 # dev/test/layout.js: Playwright, installed with npm install --prefix dev playwright
@@ -36,3 +45,8 @@ dev/test/.local/
 .wrangler/
 .dev.vars
 .codegraph/
+
+# Local RCA device evidence belongs in the private audit, not this source tree.
+/audio-*.txt
+/phone-rca-*.png
+/private/

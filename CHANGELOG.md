@@ -4,6 +4,13 @@ Ba số phiên bản, mỗi số chỉ tăng khi phần của nó đổi: `VERSI
 
 Three version numbers, each bumped only when its own part changes: `VERSION` (the release and the computer app), `app/android/VERSION` (phone app), `app/tv/VERSION` (TV app). Releases with the install files are on the [Releases](https://github.com/HoangTran0410/tv-remote/releases) page; the apps check there for updates.
 
+## Unreleased
+
+- RCA phone fork: avoid automatic saved-TV ADB status sessions and background Manage preparation on the tested Realtek RT2831 / Android 7.1.1 firmware.
+- Start without mirroring, hide separate mirroring/audio/Manage buttons, and skip the TV Setup prompt in RCA mode.
+- Use the separate package `dev.tvremote.phone.rca`, label TV Remote RCA in both debug and release builds, and version suffix `-rca1`; disable upstream phone update checks.
+- Document the fork's provenance, real-device validation, build/signing procedure and limitations; provide a manual Android validation workflow.
+
 ## 0.39.0 - 2026-10-31
 
 Web 0.39.0 · Phone app 0.36.0 · TV app 0.37.0 · TV Home 0.23.0 · TV Channels 0.17.0 · TV Games 0.16.0 · TV Apps 0.2.0

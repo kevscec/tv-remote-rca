@@ -49,6 +49,8 @@ internal fun MainActivity.version(): String =
     try { packageManager.getPackageInfo(packageName, 0).versionName ?: "0" } catch (e: Exception) { "0" }
 
 internal fun MainActivity.checkUpdate(manual: Boolean) {
+    // A separately signed local compatibility build must not install the upstream package.
+    if (dev.tvremote.phone.BuildConfig.RCA_SINGLE_ADB) return
     if (manual) updateNote.text = T("setup.checking")
     Thread {
         var found: Release? = null

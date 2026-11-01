@@ -1,3 +1,5 @@
+> **TV Remote RCA:** Independent phone-only compatibility fork, based on upstream v0.39.0. See [fork scope and build](LOCAL-RCA.md) or [Español](README.es.md). The documentation, downloads and badges below belong to upstream and do not describe this fork's release availability.
+
 <p align="center"><img src="docs/img/icon.png" width="88" alt="TV Remote"></p>
 
 <h1 align="center">TV Remote</h1>

@@ -96,7 +96,7 @@ import java.io.OutputStream
 @Suppress("DEPRECATION")
 internal fun MainActivity.layoutRemote() {
     val video = video && basic == null                            // keys only: there is no picture to show
-    videoBtn.visibility = if (basic == null) View.VISIBLE else View.GONE
+    videoBtn.visibility = if (basic == null && !dev.tvremote.phone.BuildConfig.RCA_SINGLE_ADB) View.VISIBLE else View.GONE
     basicBar.visibility = if (basic == null || kind() != dev.tvremote.core.remote.Remote.Kind.ANDROID) View.GONE else View.VISIBLE   // LG / Samsung have no ADB to turn on
     greyRows()
     val full = video && host != null && !floating && (fullscreen || resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)   // landscape: the picture fills the screen
@@ -107,7 +107,7 @@ internal fun MainActivity.layoutRemote() {
     if ((!video || floating) && drawing) stopDrawing()                              // nothing to draw on
     if (floatMode == FLOAT_NONE) frame.layoutParams = FrameLayout.LayoutParams(-1, if (full) -1 else -2)   // floating: its player sizes it
     stage.visibility = if (video && !floating) View.VISIBLE else View.GONE   // floating: the picture is in the small player, the keys get the room
-    listenBtn.visibility = if (basic == null) View.VISIBLE else View.GONE   // hearing the TV needs ADB too
+    listenBtn.visibility = if (basic == null && !dev.tvremote.phone.BuildConfig.RCA_SINGLE_ADB) View.VISIBLE else View.GONE
     listenBtn.setOn(listen, 16)
     listenBtn.contentDescription = if (listen) T("remote_screen.stop_listening_on_the") else T("remote_screen.hear_the_tv_on")
     exitBtn.visibility = if (full) View.VISIBLE else View.GONE
@@ -234,6 +234,7 @@ internal fun MainActivity.buildRemote() {
         if (!needsAdb()) managing.open(host)
     }
     for (b in listOf(listenBtn, videoBtn, apps)) tools.addView(b, LinearLayout.LayoutParams(dp(46), dp(40)).apply { rightMargin = dp(if (b === apps) 10 else 6) })
+    if (dev.tvremote.phone.BuildConfig.RCA_SINGLE_ADB) apps.visibility = View.GONE
     bar.addView(tools, LinearLayout.LayoutParams(-2, -2))
     bar.setPadding(0, dp(8), 0, dp(10))                               // room between the buttons and the picture
     remote.addView(bar)

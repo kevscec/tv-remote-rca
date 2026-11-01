@@ -84,6 +84,8 @@ internal object TvStatus {
 
 /** The list shows (called by each probe): reads now if the last round was long ago, then every 10 s on its own. */
 internal fun MainActivity.statusStart() {
+    // This Realtek adbd services one remote client at a time; a status link starves the controls.
+    if (dev.tvremote.phone.BuildConfig.RCA_SINGLE_ADB) return
     TvStatus.resolve = { ip -> Triple(route[ip] ?: ip, kindOf(ip), filesDir) }
     if (TvStatus.busy.get() || host != null) return
     ui.removeCallbacks(statusTick)
@@ -254,8 +256,9 @@ private fun MainActivity.shotRound() {
 /** The "Show screens" button beside the heading of the saved TVs, only its eye (words beside it crowded "Several TVs" out):
  *  on (blue edge) while the pictures are asked for; a long press says what it does. */
 internal fun MainActivity.screensButton(): android.widget.Button {
-    TvStatus.shots = prefs.getBoolean("tvshots", false)
+    TvStatus.shots = !dev.tvremote.phone.BuildConfig.RCA_SINGLE_ADB && prefs.getBoolean("tvshots", false)
     val b = button("@eye|", BTN)
+    if (dev.tvremote.phone.BuildConfig.RCA_SINGLE_ADB) b.visibility = View.GONE
     b.textSize = 14f
     b.minWidth = 0; b.minimumWidth = 0
     b.setPadding(0, 0, 0, 0)

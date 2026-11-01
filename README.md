@@ -1,3 +1,15 @@
+# TV Remote RCA — compatibility fork
+
+An independent, phone-only fork of [HoangTran0410/TV Remote](https://github.com/HoangTran0410/tv-remote), based on **v0.39.0** (phone component **0.36.0**). Built for an older RCA / Realtek RT2831 TV where overlapping ADB sessions caused connection timeouts reported as “ADB debugging is off”. Not an official upstream release and not tested on every RCA model.
+
+**Start here: [RCA changes, build and verification](LOCAL-RCA.md) · [Español](README.es.md).**
+
+The Android package is `dev.tvremote.phone.rca`, displayed as **TV Remote RCA**. The fork avoids automatic status ADB sessions and background Manage preparation, starts with mirroring off, and hides the separate mirroring/audio/Manage buttons. Home, volume and repeated cold starts were tested on the affected TV. Upstream update checks are disabled for this separately signed package. MIT attribution and upstream history are retained.
+
+The original documentation below describes upstream's full suite. Its download links, Downloader codes, badges and update instructions point to **upstream**, not this fork. This fork currently has no published release; build instructions are in LOCAL-RCA.md. Other apps in the monorepo are unchanged.
+
+---
+
 <p align="center"><img src="docs/img/icon.png" width="88" alt="TV Remote"></p>
 
 <h1 align="center">TV Remote</h1>

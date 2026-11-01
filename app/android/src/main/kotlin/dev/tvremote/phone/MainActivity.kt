@@ -323,7 +323,7 @@ class MainActivity : Activity(), Tv.Listener, SurfaceHolder.Callback {
         soundPace()                                               // Listen.kt
         reachAroundVpn()                                          // a TV at home stays reachable with a VPN on
         dev.tvremote.core.WireLog.app = "TV Remote " + version() + " (phone, Android " + android.os.Build.VERSION.RELEASE + ")"
-        video = prefs.getBoolean("video", true)
+        video = !BuildConfig.RCA_SINGLE_ADB && prefs.getBoolean("video", true)
         loadLang(this)
         volumeControlStream = android.media.AudioManager.STREAM_MUSIC     // while listening the phone's own volume keys set the sound here
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -817,8 +817,8 @@ class MainActivity : Activity(), Tv.Listener, SurfaceHolder.Callback {
                 }
                 "live" -> {
                     wasLive = true; retries = 0
-                    from?.let { checkSetup(it, h) }
-                    ui.postDelayed({ if (tv === from && host == h && foreground) managing.prepare(h) }, 3000)   // after the picture has started
+                    if (!BuildConfig.RCA_SINGLE_ADB) from?.let { checkSetup(it, h) }
+                    if (!BuildConfig.RCA_SINGLE_ADB) ui.postDelayed({ if (tv === from && host == h && foreground) managing.prepare(h) }, 3000)
                     waiting.visibility = View.GONE
                     pendingAsk?.let { q -> pendingAsk = null; Thread { val to = from?.search(q); ui.post { searched(q, to) } }.start() }
                     if (pic?.ready() != true) status.text = title(entry ?: h) + " · " + when {   // the picture's session says the rest
