@@ -1,6 +1,6 @@
 # TV Remote RCA
 
-Independent phone-only compatibility fork of [HoangTran0410/tv-remote](https://github.com/HoangTran0410/tv-remote), based on tag **v0.39.0**, commit `7ef9c8837d3b996449f4aa4b231dbe37c73a5b56`. That release contains phone component **0.36.0**; this fork reports **0.36.0-rca1** (versionCode 103600). The upstream MIT license, copyright and Git history are retained. This is not an official upstream release.
+Independent phone-only compatibility fork of [HoangTran0410/tv-remote](https://github.com/HoangTran0410/tv-remote), based on tag **v0.39.0**, commit `7ef9c8837d3b996449f4aa4b231dbe37c73a5b56`. That release contains phone component **0.36.0**; the first public fork release reports **0.36.1-rca1** (versionCode 103601), following the private **0.36.0-rca1** test install. The upstream MIT license, copyright and Git history are retained. This is not an official upstream release.
 
 The work began during a [CleanYourTV](https://github.com/Gathin23/cleanyourtv/blob/main/PROMPT.md) audit of an old RCA TV whose physical remote was missing. A free phone remote with a working Home button was needed. This fork does not port the CleanYourTV launcher or change TV firmware.
 
@@ -44,9 +44,15 @@ If Windows JDK 17 fails with `Unable to establish loopback connection` from its 
 
 ## Signing and distribution
 
-There is **no published fork release yet**. Upstream download links and Downloader codes install upstream, not this fork. The optional manual workflow `RCA Android validation` builds a debug test artifact; it does not publish a release or use a production signing key. CI debug keys are ephemeral: its APK is not guaranteed to update your existing local install.
+[Download the signed RCA phone APK](https://github.com/kevscec/tv-remote-rca/releases/latest/download/TV-Remote-RCA.apk) or [read release notes and SHA256SUMS](https://github.com/kevscec/tv-remote-rca/releases/latest). Release APKs are built with the release build type (not debuggable, R8 enabled). Updates are manual: this fork does not check or install upstream updates.
 
-Without `app/android/signing.jks`, Gradle debug builds use the workstation's Android debug key. The APK installed during the original test used that key. Preserve it privately if updates to that install are needed. Switching signing keys requires uninstalling the old fork (losing its app data) or migrating manually. Never commit or upload a keystore, ADB key or pairing file. A future public release needs a deliberate, stable signing-key policy and an increased versionCode for updates.
+Upstream download links and Downloader codes install upstream, not this fork. The optional manual workflow `RCA Android validation` builds a debug test artifact with an ephemeral CI key; it does not publish a release and cannot be assumed to update a published install.
+
+The first release deliberately retains the initial local test install's certificate to preserve in-place updates. This certificate originated as the workstation's Android development identity; its private key is now also retained in a password-protected release keystore outside the repository. This is a sideload compatibility release, not a Play Store submission. The private key is not an APK asset and is never uploaded. Signing certificate SHA256: `5056760554b8b30848b6253ea8de0cbb552dc83763e3504b326db0a07dc4e148`.
+
+Release builds use four environment variables: `RCA_KEYSTORE_PATH` (absolute path), `RCA_STORE_PASSWORD`, `RCA_KEY_ALIAS`, `RCA_KEY_PASSWORD`. With them set, run `:android:assembleRelease :android:lintRelease` from app/gradle, or `bash app/android/build.sh` from the repository root. Output is `app/android/build/outputs/apk/release/android-release.apk`; build.sh also copies it to `app/android/build/TV-Remote-RCA.apk`. Without signing variables, direct Gradle release builds are unsigned; build.sh refuses to proceed. No replacement key is generated automatically.
+
+Gradle debug builds retain the workstation's default Android debug key independently. A build made elsewhere will have another key. Keep the release keystore and its credentials privately backed up: losing or replacing them breaks updates to existing installs. Increase the phone versionCode for future releases. Never commit or upload a keystore, ADB key or pairing file.
 
 The original installed test APK's SHA256 was `f7919ef9b5c415f071081ffd6f50fe607009be551e275dffe18704f0242eca99`. That identifies the prior private test artifact, not every future build: the build includes a date and signatures depend on the builder. The source prepared for publication additionally moves the fork label into the main manifest so release builds also use the RCA name.
 
@@ -67,5 +73,15 @@ The PC disconnected from the TV's ADB before each phone test and at the end. The
 Not validated: hours of continuous use, standby/wake, every key/advanced action, other RCA models, or the entire upstream suite on emulators/desktop. Do not claim full upstream feature parity or universal compatibility.
 
 ## Maintaining this fork
+
+### First public release validation
+
+For **0.36.1-rca1**, signed JSON files were restored to their exact upstream Git bytes and `.gitattributes` now preserves LF on JSON and shell scripts. `:android:assembleRelease`, `:android:testDebugUnitTest`, `:android:lintRelease` and `:shared:testDebugUnitTest` passed: **45 phone + 712 shared unit tests, zero failures/errors**, and the configured NewApi release lint check reported no issues. The earlier signed-list failures above describe the preparation state before this correction.
+
+The broad JavaScript suite now reports **494/508 passing, 14 failing**; those remaining cases were already among the failures reproduced on pristine upstream on this Windows PC. They concern upstream documentation generation, web/i18n and media/sleep/wake tests. They were not suppressed, and no claim is made that the entire monorepo is green.
+
+The optimized signed release installed in place over versionCode 103600 without clearing data, retained the saved TV, and reports versionCode 103601 without the DEBUGGABLE flag. Reconnection after force-stop worked, and Home from the phone moved the physical TV from Settings to its OEM launcher. A press of the Settings key did not show a Settings transition on this firmware; that button is not claimed validated. Standby/wake and all advanced actions remain unverified. No claim that Bluetooth is fixed.
+
+## Upstream updates
 
 Keep changes on `rca-compat` and the original project as the read-only `upstream` remote. Review upstream changes before merging, particularly session lifecycle and update/install paths. Do not run upstream release/site-deployment scripts for this phone-only fork without reviewing their destinations. The MIT license and attribution must remain with redistributions.

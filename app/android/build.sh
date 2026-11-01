@@ -1,18 +1,15 @@
 #!/bin/bash
-# Builds app/android/build/tv-remote.apk (release, signed) with Gradle. Needs JDK 17+ and the Android SDK
+# Builds app/android/build/TV-Remote-RCA.apk (release, signed) with Gradle. Needs JDK 17+ and the Android SDK
 # (ANDROID_HOME, default ~/Library/Android/sdk). The project can also be opened in Android Studio: open the "app/gradle" folder.
-# The APK is signed with app/android/signing.jks (created on first build, git-ignored; keep it to be able to ship updates).
+# Signing values come from the environment; never silently replace the installed app's signer.
 set -e
 cd "$(dirname "$0")"
 export ANDROID_HOME="${ANDROID_HOME:-$HOME/Library/Android/sdk}"
-if [ ! -f signing.jks ]; then                                       # said out loud: a new key cannot update the installed apps
-  keytool -genkeypair -keystore signing.jks -storepass tvremote -keypass tvremote -alias tvremote \
-    -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=tv-remote" >/dev/null 2>&1
-  printf '\033[1;33m%s\033[0m\n' >&2 \
-    "WARNING: app/android/signing.jks was missing, a NEW signing key was made." \
-    "  An APK signed with it cannot update the app already installed on phones and TVs (Android refuses another key)." \
-    "  Fine for a first build or tests. For a release: rm app/android/signing.jks and get the old key back: dev/release/keys.sh restore <file>"
-fi
+: "${RCA_KEYSTORE_PATH:?Set the absolute path to the private RCA signing keystore}"
+: "${RCA_STORE_PASSWORD:?Set the keystore password}"
+: "${RCA_KEY_ALIAS:?Set the signing key alias}"
+: "${RCA_KEY_PASSWORD:?Set the signing key password}"
+test -f "$RCA_KEYSTORE_PATH"
 ../gradle/gradlew -q -p ../gradle :android:assembleRelease
-cp build/outputs/apk/release/android-release.apk build/tv-remote.apk
-ls -l build/tv-remote.apk | awk '{print "built", $9, $5, "bytes"}'
+cp build/outputs/apk/release/android-release.apk build/TV-Remote-RCA.apk
+ls -l build/TV-Remote-RCA.apk | awk '{print "built", $9, $5, "bytes"}'

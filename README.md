@@ -4,9 +4,11 @@ An independent, phone-only fork of [HoangTran0410/TV Remote](https://github.com/
 
 **Start here: [RCA changes, build and verification](LOCAL-RCA.md) · [Español](README.es.md).**
 
+**Download for Android phones: [TV-Remote-RCA.apk](https://github.com/kevscec/tv-remote-rca/releases/latest/download/TV-Remote-RCA.apk) · [Releases and checksums](https://github.com/kevscec/tv-remote-rca/releases/latest).** Install on your phone, not the TV. The release retains the initial RCA install's signing certificate, so it can update that install without clearing its data. Updates are installed manually.
+
 The Android package is `dev.tvremote.phone.rca`, displayed as **TV Remote RCA**. The fork avoids automatic status ADB sessions and background Manage preparation, starts with mirroring off, and hides the separate mirroring/audio/Manage buttons. Home, volume and repeated cold starts were tested on the affected TV. Upstream update checks are disabled for this separately signed package. MIT attribution and upstream history are retained.
 
-The original documentation below describes upstream's full suite. Its download links, Downloader codes, badges and update instructions point to **upstream**, not this fork. This fork currently has no published release; build instructions are in LOCAL-RCA.md. Other apps in the monorepo are unchanged.
+The original documentation below describes upstream's full suite. Its download links, Downloader codes, badges and update instructions point to **upstream**, not this fork. Use the RCA download above for this phone-only fork; build instructions are in LOCAL-RCA.md. Other apps in the monorepo are unchanged.
 
 ---
 

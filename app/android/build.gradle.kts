@@ -7,7 +7,8 @@ plugins {
 
 // This app's own version: the VERSION file next to this one; bump it only when this app (or app/shared) changes.
 val appVersion = (System.getenv("VERSION_NAME") ?: file("VERSION").readText()).trim()
-val keystore = file("signing.jks")                                    // git-ignored; build.sh creates one on the first build
+// RCA releases use a stable private key supplied by the builder; never generate a replacement silently.
+val keystore = System.getenv("RCA_KEYSTORE_PATH")?.let { file(it) }
 
 android {
     namespace = "dev.tvremote.phone"
@@ -27,19 +28,21 @@ android {
     buildFeatures { buildConfig = true }
     signingConfigs {
         create("release") {
-            storeFile = keystore
-            storePassword = "tvremote"
-            keyAlias = "tvremote"
-            keyPassword = "tvremote"
+            if (keystore != null) {
+                storeFile = keystore
+                storePassword = requireNotNull(System.getenv("RCA_STORE_PASSWORD")) { "Set RCA_STORE_PASSWORD" }
+                keyAlias = requireNotNull(System.getenv("RCA_KEY_ALIAS")) { "Set RCA_KEY_ALIAS" }
+                keyPassword = requireNotNull(System.getenv("RCA_KEY_PASSWORD")) { "Set RCA_KEY_PASSWORD" }
+            }
         }
     }
     buildTypes {
         release {
             isMinifyEnabled = true                                    // drops the unused part of the Kotlin library; names are kept (see proguard-rules.pro)
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "../shared/proguard-rules.pro")
-            if (keystore.exists()) signingConfig = signingConfigs.getByName("release")
+            if (keystore != null) signingConfig = signingConfigs.getByName("release")
         }
-        debug { if (keystore.exists()) signingConfig = signingConfigs.getByName("release") }   // same key, so a debug build installs over a release
+        // Debug builds keep the local Android debug key; CI never receives the RCA release key.
     }
     androidResources {
         noCompress += "jar"

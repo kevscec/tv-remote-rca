@@ -4,7 +4,10 @@ Ba số phiên bản, mỗi số chỉ tăng khi phần của nó đổi: `VERSI
 
 Three version numbers, each bumped only when its own part changes: `VERSION` (the release and the computer app), `app/android/VERSION` (phone app), `app/tv/VERSION` (TV app). Releases with the install files are on the [Releases](https://github.com/HoangTran0410/tv-remote/releases) page; the apps check there for updates.
 
-## Unreleased
+## 0.36.1-rca1 - 2026-11-01
+
+- First phone-only RCA release, package `dev.tvremote.phone.rca`, versionCode 103601. Signed release APK retains the initial local install's certificate for in-place updates; release signing credentials are supplied privately through environment variables.
+- Preserve original LF bytes in JSON lists so Windows checkouts do not invalidate upstream signatures; keep shell scripts with LF endings as well.
 
 - RCA phone fork: avoid automatic saved-TV ADB status sessions and background Manage preparation on the tested Realtek RT2831 / Android 7.1.1 firmware.
 - Start without mirroring, hide separate mirroring/audio/Manage buttons, and skip the TV Setup prompt in RCA mode.

@@ -4,6 +4,8 @@ Fork independiente de [TV Remote de HoangTran0410](https://github.com/HoangTran0
 
 El trabajo nació durante una revisión con [el prompt de CleanYourTV](https://github.com/Gathin23/cleanyourtv/blob/main/PROMPT.md). Se necesitaba reemplazar un control físico perdido. La app original conectaba, pero al volver a abrirla podía mostrar «ADB debugging is off on this TV» aunque la depuración seguía activa. Las pruebas señalaron un conflicto entre las conexiones ADB de la app y el comportamiento de ese firmware.
 
+**[Descargar TV-Remote-RCA.apk](https://github.com/kevscec/tv-remote-rca/releases/latest/download/TV-Remote-RCA.apk)** · [Release y checksums](https://github.com/kevscec/tv-remote-rca/releases/latest). Instálalo en el celular, no en el TV.
+
 ## Qué cambia
 
 - Se instala como **TV Remote RCA**, paquete `dev.tvremote.phone.rca`, junto a la app original.
@@ -11,17 +13,17 @@ El trabajo nació durante una revisión con [el prompt de CleanYourTV](https://g
 - Inicia sin duplicar pantalla y oculta los botones independientes de imagen, escucha y Manage.
 - Omite el aviso de instalar TV Setup y las actualizaciones de la app oficial.
 
-La versión es **0.36.0-rca1**: 0.36.0 es la versión del componente de teléfono incluida en la publicación original v0.39.0. No es una publicación oficial del autor original.
+La primera publicación del fork es **0.36.1-rca1**, basada en el componente de teléfono 0.36.0 de la publicación original v0.39.0. No es una publicación oficial del autor original.
 
 ## Cómo usarlo
 
-1. Compila el APK siguiendo [LOCAL-RCA.md](LOCAL-RCA.md) e instálalo en el celular.
+1. Descarga el APK del fork e instálalo en el celular. También puedes compilarlo siguiendo [LOCAL-RCA.md](LOCAL-RCA.md).
 2. Conecta celular y TV a la misma red local. La depuración ADB del TV debe estar habilitada y autorizada para este mando.
 3. Abre **TV Remote RCA** y selecciona o agrega tu TV. Cierra otros mandos ADB y desconecta el ADB del PC antes de conectarlo.
 
 **picture off** indica que no se duplica la pantalla en el celular. El mando puede seguir conectado y funcionando.
 
-No hay una versión pública del fork publicada todavía. Los enlaces y códigos Downloader de los documentos originales apuntan al proyecto original. Los APK de prueba de CI usan una firma temporal y pueden requerir desinstalar una copia anterior del fork, perdiendo sus datos.
+El APK del release conserva la firma de la primera instalación local del RCA, por lo que puede actualizarla sin borrar sus datos. Las actualizaciones se descargan e instalan manualmente desde este repositorio. Los enlaces y códigos Downloader de los documentos originales apuntan al proyecto original. Los APK de prueba de CI usan una firma temporal distinta: usa el APK del release para actualizar la instalación publicada.
 
 ## Qué comprobamos
 
